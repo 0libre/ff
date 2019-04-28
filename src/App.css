@@ -22,12 +22,37 @@
   color: white;
 }
 
-.Table {
-  display: inline;
+.movieData {
+  padding: 10px;
+  background: #2d3347;
 }
 
-.Table.loading {
+.movieData p {
+  font-size: calc(10px + 1vmin);
+}
+
+button.getMoviesButton {
+  margin: 25px;
+  height: 35px;
+  min-width: 200px;
+  width: 75vw;
+  cursor: pointer;
+  font-size: calc(10px + 2vmin);
+}
+
+.ReactTable {
+  min-width: 200px;
+  width: 75vw;
+}
+.ReactTable.loading {
   display: none;
+}
+.ReactTable .-pagination .-btn {
+  color: white;
+}
+.ReactTable .rt-tbody {
+  font-size: calc(10px + 2vmin);
+  text-align: left;
 }
 
 @keyframes App-logo-spin {

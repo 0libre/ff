@@ -1,21 +1,22 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const pino = require('express-pino-logger')()
 const axios = require('axios')
 
 const apiKeyPath = `?api_key=${process.env.movieDBaccessKey}`
 const movieDBbaseURL = 'https://api.themoviedb.org/3/'
-const trendingMovies = 'trending/all/day'
+const trending = 'trending/all/day'
 
 const app = express()
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(pino)
 
-app.get('/api/greeting', async (req, res) => {
-  const { data } = await getFromMovieDB(trendingMovies)
+app.get('/api/movies', async (req, res) => {
+
+  // TODO: HANDLE DIFFERENT CASES HERE
+
+  let filter = trending
+
+  const { data } = await getFromMovieDB(filter)
   const { results } = data
-  console.log('results', results)
-  const name = req.query.name || 'World'
   res.setHeader('Content-Type', 'application/json')
   res.send(results)
 });
