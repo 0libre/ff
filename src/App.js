@@ -1,57 +1,83 @@
 import React, { Component } from 'react';
+import ReactTable from "react-table";
+import Select from 'react-select'
 import logo from './logo.svg';
 import './App.css';
+import "react-table/react-table.css";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: '',
-      greeting: ''
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  
+  state = {
+    name: '',
+    greeting: '',
+    movieList: [],
+    gettingMovies: false
   }
 
-  handleChange(event) {
-    this.setState({ name: event.target.value });
+  options = [
+    { value: 'trending', label: 'Trending' },
+    { value: 'strawberry', label: 'Strawberry' },
+    { value: 'vanilla', label: 'Vanilla' }
+  ]
+
+  customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      borderBottom: '1px dotted pink',
+      color: state.isSelected ? 'white' : 'blue',
+      padding: 20,
+    }),
+    control: (provided) => ({
+      ...provided,
+      minWidth: 200,
+      width: '50vw'
+    })
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
+  handleChange = (event) => this.setState({selectedFilter: event.value})
+  
+  getSelectedMovies = () => {
+    this.setState({gettingMovies: true})
     fetch(`/api/greeting?name=${encodeURIComponent(this.state.name)}`)
       .then(response => response.json())
-      .then(what => console.log(what))
-      // .then(state => this.setState(state));
+      .then(list => this.setState({movieList: list}))
+      .then(_ => this.setState({gettingMovies: false}))
   }
 
   render() {
+    console.log(this.state.movieList)
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <form onSubmit={this.handleSubmit}>
-            <label htmlFor="name">Enter your name: </label>
-            <input
-              id="name"
-              type="text"
-              value={this.state.name}
-              onChange={this.handleChange}
-            />
-            <button type="submit">Submit</button>
-          </form>
-          <p>{this.state.greeting}</p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+          <Select 
+            options={this.options}
+            styles={this.customStyles}
+            onChange={this.handleChange}
+            defaultValue={this.options[0]}
+          />
+          <button onClick={this.getSelectedMovies}>
+            Get movies
+          </button>
+          <img src={logo} className={`App-logo${this.state.gettingMovies ? ' loading' : ''}`} alt="logo" />
+          <ReactTable
+            data={this.state.movieList.filter(movie => movie.title).map(movie => {
+              return {
+                name: movie.title,
+                info: movie.overview
+              }
+            })}
+            columns={[
+              {
+                Header: "Name",
+                accessor: "name"
+              },{
+                Header: "Info",
+                accessor: "info"
+              }
+            ]}
+            defaultPageSize={10}
+            className={`Table${this.state.gettingMovies ? ' loading' : ''}`}
+          />
         </header>
       </div>
     );
