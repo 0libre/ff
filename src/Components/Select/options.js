@@ -1,6 +1,6 @@
 export const selectOptions = [
     { value: 'trending', label: 'Trending' },
-    { value: 'newest', label: 'Newest' },
+    { value: 'upcoming', label: 'Upcoming' },
     { value: 'oldest', label: 'Oldest' }
 ]
 

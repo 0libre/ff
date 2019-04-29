@@ -14,10 +14,12 @@ class App extends Component {
     selectedFilter: selectOptions[0]
   }
 
-  handleChange = (event) => this.setState({selectedFilter: event.value})
+  handleChange = (selectedFilter) => this.setState({selectedFilter})
+      
   
   getSelectedMovies = () => {
     this.setState({gettingMovies: true})
+    console.log(`GET MOVIES FOR: ${this.state.selectedFilter.value}`)
     fetch(`/api/movies?filter=${encodeURIComponent(this.state.selectedFilter.value)}`)
       .then(response => response.json())
       .then(list => {
