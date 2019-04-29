@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Table } from "./Components/Table/Table"
-import { selectOptions, selectCustomStyles } from "./Components/Select/options"
+import React, { Component } from 'react'
+import { Table } from './Components/Table/Table'
+import { selectOptions, selectCustomStyles } from './Components/Select/options'
 import Select from 'react-select'
-import logo from './logo.svg';
-import "react-table/react-table.css";
-import './App.css';
+import logo from './logo.svg'
+import 'react-table/react-table.css'
+import './App.css'
 
 class App extends Component {
   
@@ -14,12 +14,11 @@ class App extends Component {
     selectedFilter: selectOptions[0]
   }
 
-  handleChange = (selectedFilter) => this.setState({selectedFilter})
+  handleChange = (selectedFilter) => this.state.selectedFilter !== selectedFilter && this.setState({selectedFilter, movieList: []})
       
   
   getSelectedMovies = () => {
     this.setState({gettingMovies: true})
-    console.log(`GET MOVIES FOR: ${this.state.selectedFilter.value}`)
     fetch(`/api/movies?filter=${encodeURIComponent(this.state.selectedFilter.value)}`)
       .then(response => response.json())
       .then(list => {
@@ -32,8 +31,8 @@ class App extends Component {
   }
 
   render = () => (
-    <div className="App">
-      <header className="App-header">
+    <div className='App'>
+      <header className='App-header'>
         <Select 
           options={selectOptions}
           styles={selectCustomStyles}
@@ -42,11 +41,11 @@ class App extends Component {
         />
         <button 
           onClick={this.getSelectedMovies}
-          className="getMoviesButton"
+          className='getMoviesButton'
         >
           Get movies
         </button>
-        <img src={logo} className={`App-logo${this.state.gettingMovies ? ' loading' : ''}`} alt="logo" />
+        <img src={logo} className={`App-logo${this.state.gettingMovies ? ' loading' : ''}`} alt='loading-spinner' />
         <Table
           tableData={this.state.movieList}
         />

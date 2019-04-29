@@ -13,7 +13,7 @@ export const Table = ({tableData}) => {
 			data={TableRender}
 			columns={[
 				{
-				Header: 'Movies',
+				Header: 'Results',
 				columns: [
 					{
 						id: 'title',
@@ -41,6 +41,7 @@ export const Table = ({tableData}) => {
 				]
 				}
 			]}
+			showPageSizeOptions={false}
 			defaultPageSize={10}
 			className='-striped -highlight'
 			SubComponent={({index}) => {

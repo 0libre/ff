@@ -1,16 +1,16 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const axios = require('axios')
+const { get } = require('axios')
 
 const api_key = process.env.movieDBaccessKey
 const movieDBbaseURL = 'https://api.themoviedb.org/3/'
 const paths = {
-  trending: 'trending/all/day',
+  trending: 'trending/movie/day',
   upcoming: 'discover/movie?language=en-US&sort_by=release_date.desc',
   oldest: 'discover/movie?language=en-US&sort_by=release_date.asc'
 }
 
-const getFromMovieDB = (urlSuffix) => axios.get(`${movieDBbaseURL}${urlSuffix}`, { 
+const getFromMovieDB = (urlSuffix) => get(`${movieDBbaseURL}${urlSuffix}`, { 
   params: {
     api_key
   }
