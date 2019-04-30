@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Table } from './Components/Table/Table'
 import { selectOptions, selectCustomStyles } from './Components/Select/options'
+import { Button } from './Components/Button/button'
+import { LoadingSpinner } from './Components/LoadingSpinner/loadingSpinner'
 import Select from 'react-select'
 import logo from './logo.svg'
 import 'react-table/react-table.css'
@@ -16,7 +18,6 @@ class App extends Component {
 
   handleChange = (selectedFilter) => this.state.selectedFilter !== selectedFilter && this.setState({selectedFilter, movieList: []})
       
-  
   getSelectedMovies = () => {
     this.setState({gettingMovies: true})
     fetch(`/api/movies?filter=${encodeURIComponent(this.state.selectedFilter.value)}`)
@@ -39,13 +40,16 @@ class App extends Component {
           onChange={this.handleChange}
           defaultValue={this.state.selectedFilter}
         />
-        <button 
+        <Button
           onClick={this.getSelectedMovies}
-          className='getMoviesButton'
-        >
-          Get movies
-        </button>
-        <img src={logo} className={`App-logo${this.state.gettingMovies ? ' loading' : ''}`} alt='loading-spinner' />
+          className={'getMoviesButton'}
+          buttonText={'Get movies'}
+        />
+        <LoadingSpinner
+          src={logo}
+          className='App-logo'
+          loading={this.state.gettingMovies}
+        />
         <Table
           tableData={this.state.movieList}
         />
